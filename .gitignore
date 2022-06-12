@@ -1,0 +1,9 @@
+*.iml
+.iml
+
+*.idea
+.idea
+.idea/
+cmake-build-debug/
+
+.xml
