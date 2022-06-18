@@ -48,7 +48,7 @@ PalabraTypeTableHash *resizeTable(PalabraTypeTableHash *tableHash, int *currentS
         if(newSize % 2 == 0){
             newSize++;
         }
-        printf("Nuevo tamaño: %d\n", newSize);
+        //printf("Nuevo tamaño: %d\n", newSize);
         PalabraTypeTableHash *tmp = realloc(tableHash, sizeof(PalabraTypeTableHash) * newSize);
         if (tmp) {
             tableHash = tmp;
@@ -75,15 +75,15 @@ int insert(PalabraTypeTableHash *tableHash, PalabraType palabraType, int size, i
 
     int inserted = FALSE;
 
-    printf("\nInsertando: %s \t", palabraType.palabra);
+    //printf("\nInsertando: %s \t", palabraType.palabra);
 
     // Calcula key (k)
     int k = getAsciiValueFromString(palabraType.palabra);
 
-    printf("\ttableSize:%d   k:%d   ", size, k);
+    //printf("\ttableSize:%d   k:%d   ", size, k);
     // Obtiene h0
     int h0 = H(k, size);
-    printf("h0:%d\t", h0);
+    //printf("h0:%d\t", h0);
 
     // Crear el registro a insertar
     PalabraTypeTableHash reg;
@@ -98,21 +98,20 @@ int insert(PalabraTypeTableHash *tableHash, PalabraType palabraType, int size, i
         tableHash[h0] = reg;
         inserted = TRUE;
 
-        printf("\tOK!");
-        //printPalabraTypeHash(&reg);
+        //printf("\tOK!");
     } else {
         nCollisions = 1;
         int newH;
         while (inserted != TRUE) {
-            printf("\n\tcollision:%d   ", nCollisions);
+            //printf("\n\tcollision:%d   ", nCollisions);
             newH = G(k, nCollisions, size);
-            printf("newH:%d",newH);
+            //printf("newH:%d",newH);
             if (isAvailable(tableHash[newH].status) == TRUE) {
                 reg.palabraType.finalkey = newH;
                 reg.palabraType.attempts = nCollisions;
                 tableHash[newH] = reg;
                 inserted = TRUE;
-                printf("\tOK!");
+                //printf("\tOK!");
             } else {
                 nCollisions++;
                 if (nCollisions > size) {
@@ -138,11 +137,8 @@ PalabraType *search(PalabraTypeTableHash *tableHash, char *palabraBuscar, int ta
     // Calcula key (k)
     int k = getAsciiValueFromString(palabraBuscar);
 
-    printf("\tk:%d   ", k);
-
     // Obtiene h0
     int h0 = H(k, tableSize);
-    printf("h0:%d\t", h0);
 
     // Si la primera validación no hay nada en h0 no existirá esa palabra en la tabla
     if(tableHash[h0].status == LIBRE){
@@ -187,7 +183,7 @@ int H(int k, int size) {
 
 int G(int k, int i, int size) {
     int d = D(k, size);
-    printf("D=%d ", d);
+    //printf("D=%d ", d);
     return ((H(k, size) + (d * i)) % size);
 }
 
@@ -214,7 +210,7 @@ float loadFactor(PalabraTypeTableHash *tableHash, int size) {
     float factor = ((float) getInserted(tableHash, size) / size);
     if((factor*100) > CLOUDY_LOAD_FACTOR){
         printf("\nFactor de carga: %.2f --> ", factor);
-        printf("%.0f%% ocupado\n", factor * 100);
+        printf("%.0f%% ocupado. Redimensionando!", factor * 100);
     }
     return factor;
 }

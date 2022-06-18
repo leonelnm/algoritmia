@@ -30,7 +30,7 @@ int countWordsInFIle(FILE *file, int *longestWord) {
 
 
 PalabraType *getDataFromFile(char *filename, int *listSize) {
-    printf("Leyendo archivo %s...\n", filename);
+    //printf("Leyendo archivo %s...\n", filename);
     // Path
     char *path = malloc(sizeof(char *) * (strlen(filename) + 6)); // 5 = docs/
     strcpy(path, "docs/");
@@ -44,8 +44,8 @@ PalabraType *getDataFromFile(char *filename, int *listSize) {
 
     int longestWord = 0;
     int size = countWordsInFIle(file, &longestWord);
-    printf("Cantidad de palabras encontradas: %d\n", size);
-    printf("Longitud palabra más larga: %d\n", longestWord);
+    //printf("Cantidad de palabras encontradas: %d\n", size);
+    //printf("Longitud palabra más larga: %d\n", longestWord);
 
     *listSize = size;
 
@@ -109,7 +109,6 @@ char **getFilenamesList(int *listSize) {
         free(dir);
         closedir(directory);
 
-        printf("\n");
         return docsTxt;
     } else {
         printf("ERROR, imposible encontrar el directorio docs/ en la raiz");

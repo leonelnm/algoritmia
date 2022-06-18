@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "read_files.h"
 
 void showMainMenu(int firstTime);
 
 int main() {
 
+    printf("Cargando...\n");
     // Buscar archivos txt
     printf("Buscando archivos .txt en docs/ ...\n");
     int filenamelistSize = 0;
@@ -21,7 +23,6 @@ int main() {
     PalabraTypeTableHash *tableHash = NULL;
 
     for (int i = 0; i < filenamelistSize; ++i) {
-        printf("\n");
         int dataListSize = 0;
         // Leer palabras de archivo
         PalabraType *data = getDataFromFile(filename_list[i], &dataListSize);
@@ -43,10 +44,13 @@ int main() {
                 }
             }
         }
-        printf("\n***** Tabla %s *****\n", filename_list[i]);
-        printTableHash(tableHash, sizeTableHash);
+
+        //printTableHash(tableHash, sizeTableHash);
     }
 
+    printf("\nready!");
+
+    // Inicia 'GUI'
     showMainMenu(TRUE);
     int optionSelected = -1;
     scanf("%d", &optionSelected);
@@ -64,10 +68,13 @@ int main() {
         if(optionSelected == 1 ){
             char cadena[50];
             int counterFounds = 0;
-            printf("\nInserte palabra a buscar: ");
+            printf("\nInserte palabra a buscar (EXIT para terminar) :");
             scanf("%s", cadena);
+            if(strcmp("EXIT", cadena) == 0){
+                break;
+            }
             PalabraType *response = search(tableHash, cadena, sizeTableHash, &counterFounds);
-            if(response == NULL){
+            if(counterFounds == 0){
                 printf("\nNo se ha encontrado la palabra insertada!\n");
             }
 
@@ -100,9 +107,9 @@ int main() {
 }
 
 void showMainMenu(int firstTime){
-    printf("\n\n**********************************\n");
-    printf("***Hashing Dependiente de Clave***\n");
-    printf("1. Buscar palabra\n");
-    printf("0. Salir\n");
-    printf("Seleccione opción: ");
+    printf("\n\n************************************\n");
+    printf("*** Hashing Dependiente de Clave ***\n");
+    printf("\t1. Buscar palabra\n");
+    printf("\t0. Salir\n");
+    printf("\nSeleccione opción: ");
 }
