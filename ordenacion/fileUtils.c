@@ -7,13 +7,13 @@
 #include <stdio.h>
 #include <string.h>
 
-char **readFile(char *filename){
-    int size = 10;
-    int wordLength = 10;
+char **readFile(FileType *fileType){
+    int size = fileType->nWords;
+    int wordLength = MAX_LENGTH;
 
-    FILE *file = fopen(filename, "r");
+    FILE *file = fopen(fileType->filename, "r");
     if (file == NULL) {
-        printf("Error intentando leer el archivo: %s\n", filename);
+        printf("Error intentando leer el archivo: %s\n", fileType->filename);
         perror("ERROR: ");
         exit(EXIT_FAILURE);
     }
@@ -30,6 +30,16 @@ char **readFile(char *filename){
     return words;
 }
 
-void writeFile(char *filename, char **words){
+void writeFile(FileType *fileType){
 
+    FILE* file;
+    file = fopen(fileType->filenameOrdered, "wt");
+
+    for (int i = 0; i < fileType->nWords; ++i) {
+        fprintf(file, fileType->words[i]);
+        if(i < fileType->nWords -1){
+            fprintf(file, "\n");
+        }
+    }
+    fclose(file);
 }

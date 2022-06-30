@@ -5,7 +5,9 @@
 #ifndef ORDENACION_FILEUTILS_H
 #define ORDENACION_FILEUTILS_H
 
-char **readFile(char *filename);
-void writeFile(char *filename, char **words);
+#include "types.h"
+
+char **readFile(FileType *fileType);
+void writeFile(FileType *fileType);
 
 #endif //ORDENACION_FILEUTILS_H
