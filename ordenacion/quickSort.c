@@ -27,12 +27,14 @@ void executeQuickSort(FileType **fileTypes, int orderBy){
     printf("\n**** FIN Algoritmo QuickSort ****\n");
 }
 
-void swap(char **a, char **b){
+void swap(char **a, char **b, Boolean isPivote){
     char *tmp = *a;
     *a = *b;
     *b = tmp;
 
-    nSwap++;
+    if(isPivote != TRUE){
+        nSwap++;
+    }
 }
 
 void orderByQuickSort(FileType *fileType, int ini, int end, int orderBy, Boolean isRecursive){
@@ -55,12 +57,12 @@ void orderByQuickSort(FileType *fileType, int ini, int end, int orderBy, Boolean
         if(orderBy == ASC){
             if(strcmp(fileType->words[ini], fileType->words[end]) > 0){
                 // No están ordenados los dos números, intercambiar
-                swap(&(fileType->words[ini]), &(fileType->words[end]));
+                swap(&(fileType->words[ini]), &(fileType->words[end]), FALSE);
             }
         }else{
             if(strcmp(fileType->words[ini], fileType->words[end]) < 0){
                 // No están ordenados los dos números, intercambiar
-                swap(&(fileType->words[ini]), &(fileType->words[end]));
+                swap(&(fileType->words[ini]), &(fileType->words[end]), FALSE);
             }
         }
         return;
@@ -68,9 +70,14 @@ void orderByQuickSort(FileType *fileType, int ini, int end, int orderBy, Boolean
 
     // Pivote --> La posición del centro de la lista
     int medio = (ini+end)/2;
+    int mediana = medio;
+    // Calcula mediana si el array es par
+    if(end % 2 == 0){
+        mediana = ((medio-1) + medio) /2 ;
+    }
 
     // Intercambiar pivote por el último elemento
-    swap(&(fileType->words[medio]), &(fileType->words[end]));
+    swap(&(fileType->words[mediana]), &(fileType->words[end]), TRUE);
     pivote=fileType->words[end];
 
     for(i=ini, j=end-1; ; ){
@@ -83,14 +90,14 @@ void orderByQuickSort(FileType *fileType, int ini, int end, int orderBy, Boolean
         }
 
         if(i<j){  // Todavía no se han intercambiado los índices, intercambiar números
-            swap(&(fileType->words[i]), &(fileType->words[j]));
+            swap(&(fileType->words[i]), &(fileType->words[j]), FALSE);
             i++; j--;
         }else // Se han intercambiando los índices, fin de la particion
             break;
     }
 
     //colocación del pivote en su sitio
-    swap(&(fileType->words[i]), &(fileType->words[end]));
+    swap(&(fileType->words[i]), &(fileType->words[end]), TRUE);
     //termina particion de la lista;
     // llamadas recursivas
     orderByQuickSort(fileType, ini, i-1, orderBy, TRUE);  // Vector de la izquierda del pivote

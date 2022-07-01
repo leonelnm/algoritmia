@@ -40,9 +40,9 @@ void orderByBurbuja(FileType *fileType, int orderBy){
 
     if(orderBy == ASC){
         start = clock();
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if(strcmp(fileType->words[i], fileType->words[j]) < 0) {
+        for (int i = 0; i < size-1; i++) {
+            for (int j = i+1; j < size; j++) {
+                if(strcmp(fileType->words[i], fileType->words[j]) > 0) {
                     strcpy(tmp, fileType->words[i]);
                     strcpy(fileType->words[i], fileType->words[j]);
                     strcpy(fileType->words[j], tmp);
@@ -54,9 +54,9 @@ void orderByBurbuja(FileType *fileType, int orderBy){
         end = clock();
     }else{
         start = clock();
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if(strcmp(fileType->words[i], fileType->words[j]) > 0) {
+        for (int i = 0; i < size-1; i++) {
+            for (int j = i+1; j < size; j++) {
+                if(strcmp(fileType->words[i], fileType->words[j]) < 0) {
                     strcpy(tmp, fileType->words[i]);
                     strcpy(fileType->words[i], fileType->words[j]);
                     strcpy(fileType->words[j], tmp);

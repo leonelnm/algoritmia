@@ -11,6 +11,6 @@ void executeQuickSort(FileType **fileTypes, int orderBy);
 
 void orderByQuickSort(FileType *fileType, int ini, int end, int orderBy, Boolean isRecursive);
 
-void swap(char **a, char **b);
+void swap(char **a, char **b, Boolean isPivote);
 
 #endif //ORDENACION_QUICKSORT_H
