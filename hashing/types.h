@@ -9,7 +9,6 @@
 #define OCUPADO 0
 #define LIBRE -1
 #define BORRADO -2
-#define NOT_FOUND -3
 
 typedef struct palabraType {
     char *palabra;
@@ -30,12 +29,22 @@ typedef struct responseSearch {
 } ResponseSearch;
 
 typedef enum {
-    FALSE, TRUE
+    FALSE=0, TRUE=1
 } Boolean;
+
+typedef enum {
+    SEARCH=1, RETURN=2, EXIT=0
+} Option;
 
 PalabraType *createPalabraType(char *filename, char *palabra);
 int countRepeteadWord(PalabraType *list, char *filename, int size);
 
+// Menu
+int isValidOption(int option, int min, int max);
+
 void printTableHash(PalabraTypeTableHash *tableHash, int size);
+void printArrayPalabraType(PalabraType *list, int size);
+void printArrayPalabraType(PalabraType *list, int size);
+void printPalabraType(PalabraType type);
 
 #endif //HASHING_TYPES_H

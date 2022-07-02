@@ -26,12 +26,35 @@ PalabraType *createPalabraType(char *filename, char *palabra){
 
 void printTableHash(PalabraTypeTableHash *tableHash, int size){
     for (int i = 0; i < size; ++i) {
-        printf("i(%d).%d\t",i, tableHash[i].status);
+//        printf("%d.%d\t",i, tableHash[i].status);
+//        if(i != 0 && i % 10 == 0){
+//            printf("\n");
+//        }
+        if(tableHash[i].status == OCUPADO){
+            //printf("%d.%s\n", i, tableHash[i].palabraType.palabra);
+            if(strcmp("Había", tableHash[i].palabraType.palabra) == 0){
+                printf("Index: %d\t",i);
+                printPalabraType(tableHash[i].palabraType);
+            }
+        }
+    }
+}
+
+void printArrayPalabraType(PalabraType *list, int size){
+    printf("\n");
+    for (int i = 0; i < size; ++i) {
+        printf("%d.%s\t",i, list[i].palabra);
         if(i != 0 && i % 10 == 0){
             printf("\n");
         }
     }
+    printf("\n");
 }
+
+void printPalabraType(PalabraType type){
+    printf("%s: %s\n", type.filename, type.palabra);
+}
+
 
 int countRepeteadWord(PalabraType *list, char *filename, int size){
     int counter = 0;
@@ -42,4 +65,12 @@ int countRepeteadWord(PalabraType *list, char *filename, int size){
     }
 
     return counter;
+}
+
+int isValidOption(int option, int min, int max){
+    if(option < min || option > max){
+        printf("\nInserte opción válida %d-%d: ", min, max);
+        return FALSE;
+    }
+    return TRUE;
 }

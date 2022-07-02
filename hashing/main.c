@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "read_files.h"
+#include "key_dependent.h"
+#include "chaining.h"
 
-void showMainMenu(int firstTime);
+int showMainMenu();
 
 int main() {
 
@@ -18,98 +19,43 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Crear tabla hash a null
-    int sizeTableHash = 0;
-    PalabraTypeTableHash *tableHash = NULL;
+    //executeChaining(filename_list, filenamelistSize);
 
-    for (int i = 0; i < filenamelistSize; ++i) {
-        int dataListSize = 0;
-        // Leer palabras de archivo
-        PalabraType *data = getDataFromFile(filename_list[i], &dataListSize);
-        //printPalabraType(data, dataListSize);
-
-        // Inicializar tableHash
-        sizeTableHash = dataListSize;
-        tableHash = init(tableHash, &sizeTableHash);
-
-        for (int j = 0; j < dataListSize+1; ++j) {
-            if(data[j].filename != NULL && data[j].palabra != NULL){
-                int inserted = insert(tableHash, data[j], sizeTableHash, FALSE);
-                //printTableHash(tableHash, sizeTableHash);
-                // Si no ha insertado O el factor de carga es mayor a CLOUDY_LOAD_FACTOR
-                if(inserted != TRUE
-                    || isLoadFactorCloudy(tableHash, sizeTableHash) == TRUE){
-                    tableHash = resizeTable(tableHash, &sizeTableHash);
-                    j--;
-                }
-            }
+    int option = showMainMenu();
+    int response = -1;
+    //int option = EXIT;
+    while (option != EXIT){
+        if(option == 1){    // Dependiente de Clave
+            response = executeKeyDependent(filename_list, filenamelistSize);
+        }
+        if(option == 2){ // Encadenamiento
+            response = executeChaining(filename_list, filenamelistSize);
         }
 
-        //printTableHash(tableHash, sizeTableHash);
-    }
+        if(response == EXIT) break;
 
-    printf("\nready!");
-
-    // Inicia 'GUI'
-    showMainMenu(TRUE);
-    int optionSelected = -1;
-    scanf("%d", &optionSelected);
-
-    while (1)
-    {
-        if(optionSelected == 0){
-            break;
-        }
-        if(optionSelected < 0 || optionSelected > 1){
-            printf("\nInserte opción válida 0-1: ");
-            scanf("%d", &optionSelected);
-        }
-
-        if(optionSelected == 1 ){
-            char cadena[50];
-            int counterFounds = 0;
-            printf("\nInserte palabra a buscar (EXIT para terminar) :");
-            scanf("%s", cadena);
-            if(strcmp("EXIT", cadena) == 0){
-                break;
-            }
-            PalabraType *response = search(tableHash, cadena, sizeTableHash, &counterFounds);
-            if(counterFounds == 0){
-                printf("\nNo se ha encontrado la palabra insertada!\n");
-            }
-
-            if(counterFounds > 0){
-                printf("\nRespuesta:\n");
-                ResponseSearch responses[filenamelistSize];
-                for (int i = 0; i < filenamelistSize; ++i) {
-                    ResponseSearch search;
-                    search.filename = filename_list[i];
-                    search.repeated = countRepeteadWord(response, filename_list[i], counterFounds);
-
-                    responses[i] = search;
-                }
-
-                for (int i = 0; i < filenamelistSize; ++i) {
-                    if(responses[i].repeated > 0){
-                        printf("Número palabras ('%s', %s)=%d\n", cadena, responses[i].filename, responses[i].repeated);
-                    }
-                }
-            }
-
-        }
-
+        option = showMainMenu();
     }
 
     printf("\nBye! :)\n");
     free(filename_list);
-    free(tableHash);
     return 0;
 }
 
-void showMainMenu(int firstTime){
-    printf("\n\n************************************\n");
-    printf("*** Hashing Dependiente de Clave ***\n");
-    printf("\t1. Buscar palabra\n");
+int showMainMenu(){
+    printf("\n\n\n\n");
+    printf("*********************************************\n");
+    printf("*** Hashing: Técnicas resolver colisiones ***\n");
+    printf("\t1. Dependiente de clave\n");
+    printf("\t2. Encadenamiento\n");
     printf("\t0. Salir\n");
     printf("\nSeleccione opción: ");
+
+    int optionSelected = -1;
+    scanf("%d", &optionSelected);
+    while(isValidOption(optionSelected, 0, 2) != TRUE){
+        scanf("%d", &optionSelected);
+    }
+
+    return optionSelected;
 }

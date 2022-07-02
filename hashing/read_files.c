@@ -28,6 +28,29 @@ int countWordsInFIle(FILE *file, int *longestWord) {
     return word_counter > 0 ? word_counter : 0;
 }
 
+int getLengthFIle(char *filename){
+    char *path = malloc(sizeof(char *) * (strlen(filename) + 6)); // 5 = docs/
+    strcpy(path, "docs/");
+    strcat(path, filename);
+    FILE *file = fopen(path, "r");
+    if (file == NULL) {
+        printf("Error intentando leer el archivo: %s\n", filename);
+        exit(EXIT_FAILURE);
+    }
+    free(path);
+
+    char ch;
+    int word_counter = 0;
+    while ((ch = fgetc(file)) != EOF) {
+        if (ch == '\n' || ch == ' ') {
+            word_counter++;
+        }
+    }
+
+    fclose(file);
+
+    return word_counter;
+}
 
 PalabraType *getDataFromFile(char *filename, int *listSize) {
     //printf("Leyendo archivo %s...\n", filename);
@@ -57,8 +80,16 @@ PalabraType *getDataFromFile(char *filename, int *listSize) {
 
     int index = 0;
     char *line = (char *) malloc(sizeof(char) * longestWord);
-    while (!feof(file)) {
-        fscanf(file, "%s", line);
+    while (fscanf(file, "%s", line) != EOF) {
+        // uFEFF
+        if(strncmp("\uFEFF", line, 3) == 0){
+            char *tmp = (char *) malloc(sizeof(char) * longestWord);
+            strncpy(tmp, &line[3], strlen(line));
+            strcpy(line, tmp);
+            free(tmp);
+        }
+
+        //fscanf(file, "%s", line);
         PalabraType *palabraType = createPalabraType(filename, line);
         palabrasType_lista[index] = *palabraType;
         index++;
@@ -111,8 +142,8 @@ char **getFilenamesList(int *listSize) {
 
         return docsTxt;
     } else {
-        printf("ERROR, imposible encontrar el directorio docs/ en la raiz");
-        perror("Que le pasa?!");
+        printf("ERROR, imposible encontrar el directorio docs/ en la raiz\n");
+        perror("ERROR:");
         exit(EXIT_FAILURE);
     }
 }
