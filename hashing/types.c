@@ -32,10 +32,6 @@ void printTableHash(PalabraTypeTableHash *tableHash, int size){
 //        }
         if(tableHash[i].status == OCUPADO){
             //printf("%d.%s\n", i, tableHash[i].palabraType.palabra);
-            if(strcmp("Había", tableHash[i].palabraType.palabra) == 0){
-                printf("Index: %d\t",i);
-                printPalabraType(tableHash[i].palabraType);
-            }
         }
     }
 }

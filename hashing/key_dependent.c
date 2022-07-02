@@ -88,7 +88,7 @@ PalabraTypeTableHash *loadData(char **filename_list, int filenamelistSize, int *
         // Leer palabras de archivo
         PalabraType *data = getDataFromFile(filename_list[i], &dataListSize);
         //printArrayPalabraType(data, dataListSize);
-        printTableHash(tableHash, sizeTableHash);
+        //printTableHash(tableHash, sizeTableHash);
 
         // Inicializar tableHash
         sizeTableHash = dataListSize;
@@ -180,13 +180,6 @@ PalabraTypeTableHash *resizeTable(PalabraTypeTableHash *tableHash, int *currentS
 int insert(PalabraTypeTableHash *tableHash, PalabraType palabraType, int size, int reinsert) {
 
     int inserted = FALSE;
-
-    if(strcmp("\uFEFFHabía", palabraType.palabra) == 0){
-        printf("\n----Caracter FEFF: %s \t", palabraType.palabra);
-    }
-    if(strcmp("Había", palabraType.palabra) == 0){
-        printf("\n----OK: %s \t", palabraType.palabra);
-    }
 
     // Calcula key (k)
     int k = getAsciiValueFromString(palabraType.palabra);
@@ -316,7 +309,7 @@ int getInserted(PalabraTypeTableHash *tableHash, int size){
 float loadFactor(PalabraTypeTableHash *tableHash, int size) {
     float factor = ((float) getInserted(tableHash, size) / size);
     if((factor*100) > CLOUDY_LOAD_FACTOR){
-        printf("\nFactor de carga: %.2f --> ", factor);
+        printf("Factor de carga: %.2f --> ", factor);
         printf("%.0f%% ocupado. Redimensionando!\n", factor * 100);
     }
     return factor;
